@@ -15,6 +15,10 @@ from . import views
 # In this case, we have just one route: the empty string ('')
 # The empty string represents the root URL of this app
 # When the client requests the root URL of this app, Django will call the "index" view and return its response to the client
+app_name = 'polls'
 urlpatterns = [
     path('', views.index, name='index'),
+    path('<int:question_id>/', views.detail, name='detail'),
+    path('<int:question_id>/results/', views.results, name='results'),
+    path('<int:question_id>/vote/', views.vote, name='vote'),
 ]

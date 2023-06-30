@@ -1,0 +1,22 @@
+<!-- Django HTML template for displaying a specific poll (question) -->
+
+<!-- Display the text of the current question inside an <h1> HTML tag. -->
+<!-- The {{ }} syntax means we're accessing the question_text attribute of the current question object. -->
+<h1>{{ question.question_text }}</h1>
+
+<!-- Create an unordered list (<ul>) to display the choices associated with this question. -->
+<ul>
+  <!-- The {% for %}...{% endfor %} block signifies a loop in the Django template language. -->
+  <!-- Here, we're looping over each choice in the current question's set of related choices. -->
+  <!-- question.choice_set.all gets all the Choice objects related to this question, similar to running a SQL JOIN. -->
+  {% for choice in question.choice_set.all %}
+
+  <!-- For each choice, create a list item (<li>) and display the text of the choice. -->
+  <!-- Again, the {{ }} syntax means we're accessing the choice_text attribute of the current choice object. -->
+  <li>{{ choice.choice_text }}</li>
+
+  <!-- End of the loop over the choices. -->
+  {% endfor %}
+
+  <!-- End of the unordered list of choices. -->
+</ul>
