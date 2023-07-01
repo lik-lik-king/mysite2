@@ -2,7 +2,7 @@ import datetime
 # We import models from django.db, this is needed to create our own models
 from django.db import models
 from django.utils import timezone
-
+from django.contrib import admin
 # A class in Python is like a blueprint or a template for creating objects. 
 # Objects have characteristics and behaviors, which in the context of a class are called properties and methods respectively.
 # Here we're defining a class, 'Question', which will represent the concept of a 'question' in our application.
@@ -63,6 +63,15 @@ class Question(models.Model):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
     
 #testing to see if the question was published recently
+
+@admin.display(
+        boolean=True,
+        ordering='pub_date',
+        description='Published recently?',
+    )
+def was_published_recently(self):
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.pub_date <= now
 
 # Here we define another model named Choice
 class Choice(models.Model):

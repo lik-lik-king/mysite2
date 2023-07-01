@@ -1,60 +1,51 @@
+# We're importing several necessary modules and classes at the start. 
+# Http404 will be used to raise HTTP 404 errors when a question isn't found.
+# The render function will be used to produce the final HTML for our views.
+# HttpResponse will be used to return basic HTTP responses with string content.
+# The loader is used to load templates, but in this script we will stick to using the render function.
 from django.http import Http404
 from django.shortcuts import render
-
-# Import the HttpResponse class from Django's http module
-# This class lets you create HTTP responses that your views can send back to the client
-# An HTTP response is what a web server sends back to a browser or client when it receives an HTTP request
 from django.http import HttpResponse
-
 from django.template import loader
 
+# We import the Question model from the current package. 
+# This model represents the questions in our application and is used to interact with the database.
 from .models import Question
 
-# Define a new view function named "index"
-# A view in Django is a Python function that takes a web request and returns a web response
-# This function takes one parameter: an HttpRequest object, which represents the client's request
-# In this case, our view just returns a simple HTTP response containing a string
-# In a more complex app, the view might return an HTML document, a redirect, an error message, or any other type of HTTP response
+# This is a basic view function that Django will use to handle requests to the root URL of the polls application.
+# A view function takes a web request and returns a web response. 
+# Here we are returning an HttpResponse object with a simple string message.
 def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
 
-# Define the index view function
-# This function takes a web request and returns a web response
+# This index view is a bit more complex. Here we are accessing the database to get the five latest questions.
+# We use the order_by method of QuerySets to order the questions by the publication date ('-pub_date').
+# The slicing syntax [:5] gets the first five items in the QuerySet.
+# We then create a dictionary called context, where the keys are the names we will use in the template,
+# and the values are the actual Python objects.
+# Finally, we use the render function to create an HttpResponse that fills a template with our context.
 def index(request):
-    # Retrieve the latest 5 question instances from the database
-    # order_by('-pub_date') orders the instances by publication date in descending order
-    # The slicing syntax [:5] limits the QuerySet to the first 5 items
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    
-    # Define the context as a dictionary
-    # The keys are the template variable names that will be replaced with actual values
-    # In this case, 'latest_question_list' will be replaced with the actual latest_question_list
     context = {'latest_question_list': latest_question_list}
-    
-    # Return an HttpResponse that renders the specified template ('polls/index.html')
-    # The template will be filled with the given context
-    # The context variables in the template will be replaced with the actual values from the context dictionary
-    # The render function does all these tasks for us
     return render(request, 'polls/index.html', context)
 
-
-# This function handles the results view for a specific question.
-# It takes two parameters: the request object and the question_id.
-# It defines a response string with a placeholder for the question_id.
-# It returns an HttpResponse object with the response string, where the placeholder is replaced with the question_id.
-
+# This is the results view function. 
+# It takes a question ID as a parameter and creates a response string using that ID.
+# Then it returns an HttpResponse object that includes the response string.
 def results(request, question_id):
     response = "You're looking at the results of question %s."
     return HttpResponse(response % question_id)
 
-
-# This function handles the vote view for a specific question.
-# It takes two parameters: the request object and the question_id.
-# It returns an HttpResponse object with a message that includes the question_id.
-
+# This is the vote view function. 
+# It also takes a question ID as a parameter and creates a string message that includes the question ID.
+# It returns an HttpResponse object that contains this message.
 def vote(request, question_id):
     return HttpResponse("You're voting on question %s." % question_id)
 
+# This is the detail view function. 
+# It uses the get_object_or_404 function to get a Question object with a specific primary key (pk).
+# If a matching Question object doesn't exist, get_object_or_404 raises an Http404 exception.
+# It then creates an HttpResponse that renders a template. The template is filled with a context that includes the Question object.
 def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     return render(request, 'polls/detail.html', {'question': question})

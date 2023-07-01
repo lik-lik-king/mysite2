@@ -1,24 +1,27 @@
-# In polls/urls.py
+# polls/urls.py
 
-# Import the path function from Django's urls module
-# This function lets you define routes for your app
-# A route is a URL pattern that is associated with a view
-# When a client requests a URL that matches a route, Django calls the associated view function
-from django.urls import path
+# First, we're importing the necessary modules:
+from django.urls import path  # Django's function for defining URL routes
+from . import views  # The views module of the current app (polls)
 
-# Import the views module from the current directory (the polls app)
-# This allows us to access the views we defined in views.py
-from . import views
+# Here we define the name of our app. This is useful when we're using namespacing for our app's URLs.
+app_name = 'polls'  
 
-# Define the URL patterns for this app using a list named urlpatterns
-# Each item in the list represents a different route
-# In this case, we have just one route: the empty string ('')
-# The empty string represents the root URL of this app
-# When the client requests the root URL of this app, Django will call the "index" view and return its response to the client
-app_name = 'polls'
+# Define the URL patterns for the app in a list named "urlpatterns". 
+# Each item in the list represents a different route. 
+# Routes determine how URLs map to views, i.e., which function to call for a given URL.
 urlpatterns = [
-    path('', views.index, name='index'),
+    # The first path function creates a route for the empty string (''), which in this case represents 
+    # the root URL of the app. The second argument is the function to call when this URL is requested - 
+    # here it's views.index. The name 'index' allows referring to this view in other parts of Django.
+    path('', views.index, name='index'), 
+
+    # The following paths are dynamic and take an argument 'question_id'. Django will match a number in the 
+    # URL and pass it as 'question_id' to the given view. This is done by using angle brackets around the variable part.
     path('<int:question_id>/', views.detail, name='detail'),
+
+    # A similar concept is applied for the 'results' and 'vote' views. The same 'question_id' will be passed into them.
     path('<int:question_id>/results/', views.results, name='results'),
     path('<int:question_id>/vote/', views.vote, name='vote'),
 ]
+

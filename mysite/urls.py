@@ -1,29 +1,37 @@
-# The include() function allows us to include the URLconf of other applications.
-# The path() function is used to route URLs to appropriate view functions in your application.
+# Django's include() and path() functions are imported to include the URLconf of other applications
+# and route URLs to the appropriate view functions.
 from django.urls import include, path
 
-# Import the urls module from the polls app. 
-# This urls module contains the URL configuration specific to the polls app.
+# The URLs module from the polls app is imported. This module contains URL configuration for the polls app.
 from polls import urls as polls_urls
 
-# Import Django's admin module. The admin module provides a default, admin-only interface 
-# for interacting with your Django application's models.
+# Django's admin module is imported. It provides a built-in, administration interface for the application's models.
 from django.contrib import admin
 
-# Define the URL patterns for the project.
+# The URL patterns for the project are defined.
 # Each URL pattern is represented by a call to the path() function.
-# The first argument to path() is a string that specifies the URL pattern.
-# The second argument is the view that should be used for that pattern.
-# The include() function is used to include the URL configuration from another app (in this case, polls).
-# By using include(), you're telling Django to chop off whatever part of the URL matched up to that point and send the remaining string to the included URLconf for further processing.
-# When a user visits a URL that matches the pattern 'polls/', Django will send the remaining URL string to the polls.urls URLconf for further processing. 
-# The path to 'admin/' sends the user to Django's built-in administration site, if a user types your site's domain followed by /admin/ in their browser, they will be taken to the admin site.
-# This URL configuration is the base URL configuration for your entire Django project.
-# When a user visits a URL in your web application, Django starts here to figure out what to do.
+# The first argument to path() is a string specifying the URL pattern, while the second argument is the view for the pattern.
+
+# The include() function includes the URL configuration from the polls app.
+# It tells Django to remove the part of the URL up to that point and send the remaining string to the included URLconf.
+# When a user visits a URL matching the 'polls/' pattern, Django will redirect the remaining URL string to the polls.urls URLconf.
+
+# The path to 'admin/' directs users to Django's built-in admin site. Typing the domain followed by /admin/ in a browser navigates to this site.
+
+# This is the base URL configuration for the Django project.
+# Django starts here when determining what to do when a user visits a URL in the web application.
+
+# The line "Not Found: / [30/Jun/2023 19:43:48] "GET / HTTP/1.1" 404 2165" means that a request was made to the root URL ("/") of your server and a page wasn't found. 
+# This is normal if you haven't defined a view for the root URL ("/") in your urls.py file.
+
+# To navigate to the polls section of your project, enter "<your_server_address>/polls/" in your web browser.
+# Replace "<your_server_address>" with the actual server address (for example, "127.0.0.1:8000/polls/" in a local development server).
+
 urlpatterns = [
     path('polls/', include('polls.urls')),
     path('admin/', admin.site.urls),
 ]
+
 
 
 

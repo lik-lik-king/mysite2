@@ -55,7 +55,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,16 +75,41 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 # Updated the database to use mysql instead of sqlite3 in order to use the database on the server and continuously update it without any issues
 
+# This is the DATABASES setting for a Django project that uses MySQL.
+# It's a dictionary where the keys are the names of the databases that your Django project can use.
+# The values are dictionaries that specify how Django should connect to the database.
+
+# Opting for MySQL database in place of the default SQLite is an initiative to leverage the additional features and performance benefits offered by MySQL. MySQL provides better support for larger databases, more concurrent users, and extensive capabilities like full-text search, transaction control, etc., hence aligning with our aim to go a step further in our project setup.
+
 DATABASES = {
+    # 'default' is the key for the default database.
     'default': {
+        # The ENGINE setting tells Django which database engine to use.
+        # For MySQL, you should use 'django.db.backends.mysql'.
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'django_db',
-        'USER': 'root',
-        'PASSWORD': 'Champion001!',
+
+        # NAME is the name of your MySQL database.
+        # You should replace 'mydatabase' with the actual name of your database.
+        'NAME': 'mydatabase',
+
+        # USER is the username of the MySQL user who has access to the database.
+        # You should replace 'mydatabaseuser' with the actual username.
+        'USER': 'mydatabaseuser',
+
+        # PASSWORD is the password of the MySQL user.
+        # You should replace 'mypassword' with the actual password.
+        'PASSWORD': 'mypassword',
+
+        # HOST is the host where your MySQL server is running.
+        # If your MySQL server is running on the same machine as your Django project, you can use 'localhost'.
         'HOST': 'localhost',
+
+        # PORT is the port on which your MySQL server is listening.
+        # The default port for MySQL is 3306.
         'PORT': '3306',
     }
 }
+
 
 
 # Password validation
